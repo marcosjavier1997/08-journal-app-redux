@@ -2,13 +2,18 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { useForm } from './../../hooks/useForm';
 import validator from 'validator'
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { removeError, setError } from '../../actions/ui';
 
 
 export const RegisterScreen = () => {
 
-    
+    const dispatch = useDispatch();
+    const {msgError} = useSelector( state => state.ui );
+
+
+    console.log(msgError)
+
     const [formValues, handleInputChange] = useForm({
         name: 'Marcos',
         email: 'marcos_go2015@hotmail.com',
@@ -29,7 +34,7 @@ export const RegisterScreen = () => {
 
     }
 
-    const dispatch = useDispatch();
+
 
     const isFormValid = () =>{
         if(name.trim().length===0){
@@ -52,7 +57,10 @@ export const RegisterScreen = () => {
             <h3 className="auth__title">Register</h3>
 
             <form onSubmit={handleRegister}>
-                <div className="auth__alert-error">Holamundo</div>
+                {   
+                    msgError && 
+                    (<div className="auth__alert-error">{msgError}</div>)
+                }
                 <input type = "text" placeholder= "Name" name= "name" autoComplete="off "className="auth__input" value={name} onChange={handleInputChange}/>
                 <input type = "text" placeholder= "Email" name= "email" autoComplete="off "className="auth__input"value={email} onChange={handleInputChange}/>
                 <input type = "password" placeholder= "Password" name= "password" className="auth__input"value={password} onChange={handleInputChange}/>
