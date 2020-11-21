@@ -3,14 +3,28 @@ import { types } from './../types/types';
 import { firebase, googleAuthProvider } from '../firebase/firebaseConfig';
 
 
+
 export const startLoginEmailPassword = (email,password) =>{
     return(dispatch) => {
 
         
+        firebase.auth().signInWithEmailAndPassword(email,password)
+        .then(({user})=>{
+ 
 
-        setTimeout(() => {
+            dispatch(
+                login(user.uid, user.displayName)
+            )
+        })
+        .catch(e => {
+            console.log(e);
+        }
+
+        )
+        
+   /*      setTimeout(() => {
             dispatch(login(123,"JAVIER"))
-        }, 3500);
+        }, 3500); */
 
     }
 }
