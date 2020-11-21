@@ -5,10 +5,15 @@ import {BrowserRouter as Router, Switch, Route, Redirect} from "react-router-dom
 import { firebase } from '../firebase/firebaseConfig';
 import { useDispatch } from 'react-redux';
 import { login } from '../actions/auth';
+import { useState } from 'react';
 
 export const AppRouter = () => {
 
     const dispatch = useDispatch();
+
+    const [checking, setChecking] = useState(true)
+
+    const [isLoggedIn, setIsLoggedIn] = useState(false)
 
     useEffect(() => {
         
@@ -16,10 +21,21 @@ export const AppRouter = () => {
             
             if(user?.uid){
                 dispatch(login(user.uid, user.displayName));
+                setIsLoggedIn(true)
+            }else{
+                setIsLoggedIn(false)
             }
 
+            setChecking(false);
+
         });
-    }, [])
+    }, [dispatch,setChecking,setIsLoggedIn])
+
+    if(checking){
+        return(
+            <h1>Espere...</h1>
+        )
+    }
 
     return (
         <Router>
